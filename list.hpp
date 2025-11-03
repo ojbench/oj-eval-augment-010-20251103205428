@@ -62,6 +62,7 @@ public:
         list *owner = nullptr;
         node *ptr = nullptr;
         friend class const_iterator;
+        friend class list;
     public:
         iterator() = default;
         iterator(list *o, node *p) : owner(o), ptr(p) {}
@@ -123,12 +124,12 @@ public:
          * a operator to check whether two iterators are same (pointing to the same memory).
          */
         bool operator==(const iterator &rhs) const { return owner == rhs.owner && ptr == rhs.ptr; }
-        bool operator==(const const_iterator &rhs) const;
+        bool operator==(const const_iterator &rhs) const { return rhs == *this; }
         /**
          * some other operator for iterator.
          */
         bool operator!=(const iterator &rhs) const { return !(*this == rhs); }
-        bool operator!=(const const_iterator &rhs) const;
+        bool operator!=(const const_iterator &rhs) const { return !(rhs == *this); }
     };
     /**
      * TODO
@@ -140,6 +141,7 @@ public:
         const list *owner = nullptr;
         node *ptr = nullptr;
         friend class iterator;
+        friend class list;
     public:
         const_iterator() = default;
         const_iterator(const list *o, node *p) : owner(o), ptr(p) {}
@@ -183,9 +185,6 @@ public:
         bool operator!=(const const_iterator &rhs) const { return !(*this == rhs); }
         bool operator!=(const iterator &rhs) const { return !(*this == rhs); }
     };
-    // cross-type iterator comparisons
-    bool iterator::operator==(const const_iterator &rhs) const { return rhs == *this; }
-    bool iterator::operator!=(const const_iterator &rhs) const { return !(rhs == *this); }
     /**
      * TODO Constructs
      * Atleast two: default constructor, copy constructor
